@@ -2,17 +2,18 @@
 
 // create array to hold list of todo items
 $items = array();
-
 // The loop!
 	echo "Welcome to my TODO list!" . PHP_EOL;
 do {
 	// iterate each item
 	foreach ($items as $key => $item) {
 		// display each item and a newline
-		echo "\t[{$key}] {$item}" . PHP_EOL;
+		echo "\t" . ($key + 1) . ". $item" . PHP_EOL;
 	}
+		echo "---------------------" . PHP_EOL;
+
 	// show the menu options
-	echo "Actions: (N)ew item, (R)emove item, (Q)uit : ";
+	echo "Magic Words: (N)ew item, (R)emove item, (Q)uit : ";
 
 	// get the unput from user
 	// use trim() to remove whitespaces and add newlines
@@ -31,8 +32,14 @@ do {
         $key = trim(fgets(STDIN));
 		// remove from array
 		unset($items[$key]);
+		// yells at user for trying to beat the system
 	} elseif ($input != "Q") {
-		echo "You didn't type a command!" . PHP_EOL;
+		echo "PERMISSION DENIED....and...." . PHP_EOL;
+		usleep(500000);
+		// // easter egg
+		// for ($i=0; $i > -42; $i++) { 
+		// 	echo "YOU DIDNT SAY THE MAGIC WORD!" . PHP_EOL;
+		//}
 	}
 // exit when input is (Q)uit
 } while ($input !='Q');
