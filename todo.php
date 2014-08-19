@@ -30,16 +30,19 @@ do {
 		echo 'Enter item number to remove: ' . PHP_EOL;
 		 // Get array key
         $key = trim(fgets(STDIN));
+        $key--;
 		// remove from array
 		unset($items[$key]);
+		// reset array index
+		$items = array_values($items);
 		// yells at user for trying to beat the system
 	} elseif ($input != "Q") {
 		echo "PERMISSION DENIED....and...." . PHP_EOL;
-		usleep(500000);
-		// // easter egg
-		// for ($i=0; $i > -42; $i++) { 
-		// 	echo "YOU DIDNT SAY THE MAGIC WORD!" . PHP_EOL;
-		//}
+		usleep(1000000);
+		// easter egg
+		for ($i=0; $i > -42; $i++) { 
+			echo "YOU DIDNT SAY THE MAGIC WORD!" . PHP_EOL;
+		}
 	}
 // exit when input is (Q)uit
 } while ($input !='Q');
