@@ -22,9 +22,13 @@
 
  // Get STDIN, strip whitespace and newlines, 
  // and convert to uppercase if $upper is true
- function get_input($upper = FALSE) 
- {
-         $input = trim(fgets(STDIN));
+ function get_input($upper = FALSE) {
+    if ($upper == TRUE) {
+        $input = ucfirst(trim(fgets(STDIN)));
+
+}   else {
+        $input = trim(fgets(STDIN));
+    }
      return $input;
 
      // Return filtered STDIN input
@@ -36,7 +40,7 @@
      echo list_items($items);
 
      // Show the menu options
-     echo '(N)ew item, (R)emove item, (Q)uit : ';
+     echo '(N)ew item, (R)emove item, (Q)uit, (S)ort : ';
 
      // Get the input from user
      // Use trim() to remove whitespace and newlines
@@ -53,8 +57,21 @@
          echo 'Enter item number to remove: ';
          // Get array key
          $key = get_input();
+         $key--;
          // Remove from array
          unset($items[$key]);
+     } elseif ($input == 'S') {
+        echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
+        $input = get_input();
+        if ($input == 'a') {
+            asort($items);
+        } elseif ($input == 'z') {
+            arsort($items);
+        } elseif ($input =='o') {
+            ksort($items);
+        } elseif ($input == 'r') {
+            krsort($items);
+        }
      }
  // Exit when input is (Q)uit
  } while ($input != 'Q');
