@@ -49,6 +49,7 @@ function sort_menu($input, $array) {
 }
 
 function open_file($file_name) {
+
     $handle = fopen("$file_name", 'r');
     $content = trim(fread($handle, filesize("$file_name")));
     fclose($handle);
@@ -78,7 +79,8 @@ function open_file($file_name) {
      } elseif ($input == 'O') {
         echo "Please specify file location: ";
         $file = get_input();
-        $addl_items = open_file($file);
+        // $addl_items = open_file($file);
+    $addl_items = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $items = array_merge($items, $addl_items);
      } elseif ($input == 'R') {
          // Remove which item?
