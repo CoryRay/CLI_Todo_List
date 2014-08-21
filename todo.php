@@ -33,7 +33,22 @@
 
      // Return filtered STDIN input
  }
+// Sort menu
+function sort_menu($input, $array) {
+    echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
+        $keypress = get_input();
+        if ($keypress == 'a') {
+            asort($array);
+        } elseif ($keypress == 'z') {
+            arsort($array);
+        } elseif ($keypress =='o') {
+            ksort($array);
+        } elseif ($keypress == 'r') {
+            krsort($array);
+        } return $array;
+}
 
+//////////////////////////////Execution begins////////////////////////////////// 
  // The loop!
  do {
      // Echo the list produced by the function
@@ -60,19 +75,15 @@
          $key--;
          // Remove from array
          unset($items[$key]);
+    // Make a sort menu function!
      } elseif ($input == 'S') {
-        echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
-        $input = get_input();
-        if ($input == 'a') {
-            asort($items);
-        } elseif ($input == 'z') {
-            arsort($items);
-        } elseif ($input =='o') {
-            ksort($items);
-        } elseif ($input == 'r') {
-            krsort($items);
-        }
+        $items = sort_menu($input, $items);
+     } elseif ($input == 'F') {
+        array_shift($items);
+     } elseif ($input == 'L') {
+         array_pop($items);
      }
+
  // Exit when input is (Q)uit
  } while ($input != 'Q');
 
