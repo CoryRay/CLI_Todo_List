@@ -48,6 +48,14 @@ function sort_menu($input, $array) {
         } return $array;
 }
 
+function open_file($file_name) {
+    $handle = fopen("$file_name", 'r');
+    $content = trim(fread($handle, filesize("$file_name")));
+    fclose($handle);
+    $more_items = explode("\n", $content);
+    return $more_items;
+}
+
 //////////////////////////////Execution begins////////////////////////////////// 
  // The loop!
  do {
@@ -55,7 +63,7 @@ function sort_menu($input, $array) {
      echo list_items($items);
 
      // Show the menu options
-     echo '(N)ew item, (R)emove item, (Q)uit, (S)ort : ';
+     echo '(N)ew item, (R)emove item, (Q)uit, (S)ort, (O)pen : ';
 
      // Get the input from user
      // Use trim() to remove whitespace and newlines
@@ -66,7 +74,12 @@ function sort_menu($input, $array) {
          // Ask for entry
          echo 'Enter item: ';
          // Add entry to list array
-         $items[] = get_input();
+          $items[] = get_input();
+     } elseif ($input == 'O') {
+        echo "Please specify file location: ";
+        $file = get_input();
+        $addl_items = open_file($file);
+        $items = array_merge($items, $addl_items);
      } elseif ($input == 'R') {
          // Remove which item?
          echo 'Enter item number to remove: ';
