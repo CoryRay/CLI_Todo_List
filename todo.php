@@ -56,7 +56,27 @@ function open_file($file_name) {
     $more_items = explode("\n", $content);
     return $more_items;
 }
-
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+function save_file($save_location, $array_to_save) {
+    $handle = fopen($save_location, 'w');
+    $string = implode("\n", $array_to_save);
+    trim(fwrite($handle, $string));
+}
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 //////////////////////////////Execution begins////////////////////////////////// 
  // The loop!
  do {
@@ -64,7 +84,7 @@ function open_file($file_name) {
      echo list_items($items);
 
      // Show the menu options
-     echo '(N)ew item, (R)emove item, (Q)uit, (S)ort, (O)pen : ';
+     echo '(N)ew item, (R)emove item, (S)ort, (O)pen, S(A)ve, (Q)uit : ';
 
      // Get the input from user
      // Use trim() to remove whitespace and newlines
@@ -90,8 +110,29 @@ function open_file($file_name) {
          $key--;
          // Remove from array
          unset($items[$key]);
-    // Make a sort menu function!
-     } elseif ($input == 'S') {
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+     } elseif ($input == 'A') {
+         echo "Where do you want to save your file? ";
+         $location = get_input();
+         save_file($location, $items);
+     }
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+     // 
+     elseif ($input == 'S') {
         $items = sort_menu($input, $items);
      } elseif ($input == 'F') {
         array_shift($items);
