@@ -56,27 +56,13 @@ function open_file($file_name) {
     $more_items = explode("\n", $content);
     return $more_items;
 }
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+
 function save_file($save_location, $array_to_save) {
     $handle = fopen($save_location, 'w');
     $string = implode("\n", $array_to_save);
     trim(fwrite($handle, $string));
 }
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+
 //////////////////////////////Execution begins////////////////////////////////// 
  // The loop!
  do {
@@ -102,7 +88,8 @@ function save_file($save_location, $array_to_save) {
         // $addl_items = open_file($file);
     $addl_items = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $items = array_merge($items, $addl_items);
-     } elseif ($input == 'R') {
+    } 
+     elseif ($input == 'R') {
          // Remove which item?
          echo 'Enter item number to remove: ';
          // Get array key
@@ -110,33 +97,19 @@ function save_file($save_location, $array_to_save) {
          $key--;
          // Remove from array
          unset($items[$key]);
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-     } elseif ($input == 'A') {
+     }
+     elseif ($input == 'A') {
          echo "Where do you want to save your file? ";
          $location = get_input();
          save_file($location, $items);
      }
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-     // 
      elseif ($input == 'S') {
         $items = sort_menu($input, $items);
-     } elseif ($input == 'F') {
+     }
+     elseif ($input == 'F') {
         array_shift($items);
-     } elseif ($input == 'L') {
+     }
+     elseif ($input == 'L') {
          array_pop($items);
      }
 
