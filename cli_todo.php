@@ -1,13 +1,13 @@
 <?php
 
  // Create array to hold list of todo items
-$items = array();
+$items = [];
 
  // List array items formatted for CLI
 function list_items($list)
 {
     $list_string = '';
-    
+
     foreach ($list as $key => $value) {
         $list_string .= "\t" . ($key + 1) . ". $value" . PHP_EOL;
     }
@@ -20,39 +20,48 @@ function list_items($list)
     return $list_string;
 }
 
- // Get STDIN, strip whitespace and newlines, 
+ // Get STDIN, strip whitespace and newlines,
  // and convert to uppercase if $upper is true
 function get_input($upper = FALSE)
 {
-    if ($upper == TRUE) {
+    if ($upper) {
         $input = ucfirst(trim(fgets(STDIN)));
 
     } else {
         $input = trim(fgets(STDIN));
     }
-    return $input;
 
      // Return filtered STDIN input
+    return $input;
 }
 // Sort menu
 function sort_menu($input, $array)
 {
     echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
+
     $keypress = get_input();
-    if ($keypress == 'a') {
-        asort($array);
-    } elseif ($keypress == 'z') {
-        arsort($array);
-    } elseif ($keypress =='o') {
-        ksort($array);
-    } elseif ($keypress == 'r') {
-        krsort($array);
-    } return $array;
+
+    switch ($keypress) {
+        case 'a':
+            asort($array);
+            break;
+        case 'z':
+            arsort($array);
+            break;
+        case 'o':
+            ksort($array);
+            break;
+        case 'r':
+            krsort($array);
+            break;
+        default:
+            break;
+    }
+    return $array;
 }
 
 function open_file($file_name)
 {
-
     $handle = fopen("$file_name", 'r');
     $content = trim(fread($handle, filesize("$file_name")));
     fclose($handle);
@@ -67,9 +76,9 @@ function save_file($save_location, $array_to_save)
     trim(fwrite($handle, $string));
 }
 
-//////////////////////////////Execution begins////////////////////////////////// 
+//////////////////////////////Execution begins//////////////////////////////
 
- // The loop!
+// The loop!
 do {
     // Echo the list produced by the function
     echo list_items($items);
@@ -81,47 +90,63 @@ do {
      // Use trim() to remove whitespace and newlines
     $input = get_input(TRUE);
 
-     // Check for actionable input
-    if ($input == 'N') {
-         // Ask for entry
-       echo 'Enter item: ';
-         // Add entry to list array
-       $items[] = get_input();
-    } elseif ($input == 'O') {
-        echo "Please specify file location: ";
-        $file = get_input();
+    // Check for actionable input
+    switch ($input) {
+        case 'N':
+            // Ask for entry
+            echo 'Enter item: ';
+            // Add entry to list array
+            $items[] = get_input();
+            break;
 
-        // $addl_items = open_file($file);
-        $addl_items = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        $items = array_merge($items, $addl_items);
-    } elseif ($input == 'R') {
+        case 'O':
+            echo "Please specify file location: ";
+            $file = get_input();
 
-         // Remove which item?
-        echo 'Enter item number to remove: ';
+            // $addl_items = open_file($file);
+            $addl_items = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $items = array_merge($items, $addl_items);
+            break;
 
-        // Get array key
-        $key = get_input();
-        $key--;
+        case 'R':
+            // Remove which item?
+            echo 'Enter item number to remove: ';
 
-        // Remove from array
-        unset($items[$key]);
-    } elseif ($input == 'A') {
-        echo "Where do you want to save your file? ";
-        $location = get_input();
-        save_file($location, $items);
-    } elseif ($input == 'S') {
-        $items = sort_menu($input, $items);
-    } elseif ($input == 'F') {
-        array_shift($items);
-    } elseif ($input == 'L') {
-        array_pop($items);
-    }
+            // Get array key
+            $key = get_input();
+            $key--;
+
+            // Remove from array
+            unset($items[$key]);
+            break;
+
+        case 'A':
+            echo "Where do you want to save your file? ";
+            $location = get_input();
+            save_file($location, $items);
+            break;
+
+        case 'S':
+            $items = sort_menu($input, $items);
+            break;
+
+        case 'F':
+            array_shift($items);
+            break;
+
+        case 'L':
+            array_pop($items);
+            break;
+
+        default:
+            break;
+}
 
 // Exit when input is (Q)uit
 } while ($input != 'Q');
 
  // Say Goodbye!
-echo "Goodbye! . PHP_EOL;
+echo "Goodbye!" . PHP_EOL;
 
  // Exit with 0 errors
 exit(0);
