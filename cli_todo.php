@@ -35,7 +35,7 @@ function get_input($upper = FALSE)
     return $input;
 }
 // Sort menu
-function sort_menu($input, $array)
+function sort_menu($array)
 {
     echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
 
@@ -127,7 +127,7 @@ do {
             break;
 
         case 'S':
-            $items = sort_menu($input, $items);
+            $items = sort_menu($items);
             break;
 
         case 'F':
