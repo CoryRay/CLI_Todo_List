@@ -4,25 +4,21 @@
 $items = [];
 
  // List array items formatted for CLI
-function list_items($list)
+function listItems($list)
 {
-    $list_string = '';
+    $listString = '';
 
     foreach ($list as $key => $value) {
-        $list_string .= "\t" . ($key + 1) . ". $value" . PHP_EOL;
+        $listString .= "\t" . ($key + 1) . ". " . $value . PHP_EOL;
     }
 
      // Return string of list items separated by newlines.
-     // Should be listed [KEY] Value like this:
-     // [1] TODO item 1
-     // [2] TODO item 2 - blah
-     // DO NOT USE ECHO, USE RETURN
-    return $list_string;
+    return $listString;
 }
 
  // Get STDIN, strip whitespace and newlines,
  // and convert to uppercase if $upper is true
-function get_input($upper = FALSE)
+function getInput($upper = FALSE)
 {
     if ($upper) {
         $input = ucfirst(trim(fgets(STDIN)));
@@ -31,15 +27,15 @@ function get_input($upper = FALSE)
         $input = trim(fgets(STDIN));
     }
 
-     // Return filtered STDIN input
+    // Return filtered STDIN input
     return $input;
 }
-// Sort menu
-function sort_menu($array)
+
+function sortMenu($array)
 {
     echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered : ';
 
-    $keypress = get_input();
+    $keypress = getInput();
 
     switch ($keypress) {
         case 'a':
@@ -60,61 +56,55 @@ function sort_menu($array)
     return $array;
 }
 
-function open_file($file_name)
+function saveFile($saveLocation, $arrayToSave)
 {
-    $handle = fopen("$file_name", 'r');
-    $content = trim(fread($handle, filesize("$file_name")));
-    fclose($handle);
-    $more_items = explode("\n", $content);
-    return $more_items;
-}
-
-function save_file($save_location, $array_to_save)
-{
-    $handle = fopen($save_location, 'w');
-    $string = implode("\n", $array_to_save);
+    $handle = fopen($saveLocation, 'w');
+    $string = implode("\n", $arrayToSave);
     trim(fwrite($handle, $string));
 }
 
-//////////////////////////////Execution begins//////////////////////////////
+/**
+ * Execution Begins
+ */
 
 // The loop!
 do {
     // Echo the list produced by the function
-    echo list_items($items);
+    echo listItems($items);
 
     // Show the menu options
     echo '(N)ew item, (R)emove item, (S)ort, (O)pen, S(A)ve, (Q)uit : ';
 
-     // Get the input from user
-     // Use trim() to remove whitespace and newlines
-    $input = get_input(TRUE);
+    // Get the input from user
+    $input = getInput(TRUE);
 
     // Check for actionable input
     switch ($input) {
         case 'N':
-            // Ask for entry
             echo 'Enter item: ';
+
             // Add entry to list array
-            $items[] = get_input();
+            $items[] = getInput();
             break;
 
         case 'O':
             echo "Please specify file location: ";
-            $file = get_input();
+            $file = getInput();
 
-            // $addl_items = open_file($file);
-            $addl_items = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            $items = array_merge($items, $addl_items);
+            if (file_exists($file)) {
+                $newItems = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                $items = array_merge($items, $newItems);
+
+            } else {
+                echo "This file does not exist." . PHP_EOL;
+            }
             break;
 
         case 'R':
-            // Remove which item?
             echo 'Enter item number to remove: ';
 
-            // Get array key
-            $key = get_input();
-            $key--;
+            // Get array key and subtract 1
+            $key = getInput() - 1;
 
             // Remove from array
             unset($items[$key]);
@@ -122,12 +112,12 @@ do {
 
         case 'A':
             echo "Where do you want to save your file? ";
-            $location = get_input();
-            save_file($location, $items);
+            $location = getInput();
+            saveFile($location, $items);
             break;
 
         case 'S':
-            $items = sort_menu($items);
+            $items = sortMenu($items);
             break;
 
         case 'F':
@@ -140,13 +130,13 @@ do {
 
         default:
             break;
-}
+    }
 
 // Exit when input is (Q)uit
 } while ($input != 'Q');
 
- // Say Goodbye!
+// Say Goodbye!
 echo "Goodbye!" . PHP_EOL;
 
- // Exit with 0 errors
+// Exit with 0 errors
 exit(0);
